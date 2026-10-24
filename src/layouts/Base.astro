@@ -1,0 +1,127 @@
+---
+import "../styles/global.css";
+import { site, mailto, themeCssVars, url, fontFaceCss } from "../data/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  current?: "home" | "services" | "gallery" | "story" | "contact" | "project";
+}
+const { title, current } = Astro.props;
+const description =
+  Astro.props.description ??
+  `${site.name} — ${site.role.toLowerCase()} in ${site.location}. Selected projects, services and contact.`;
+const canonical = site.siteUrl ? new URL(Astro.url.pathname, site.siteUrl).href : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: site.name,
+  description: site.role,
+  email: site.email,
+  foundingDate: site.founded,
+  address: site.location,
+  ...(site.siteUrl ? { url: site.siteUrl } : {}),
+  sameAs: site.socials.filter((s) => s.href.startsWith("http")).map((s) => s.href),
+};
+
+const nav = [
+  { href: "/services", label: "Services", key: "services" },
+  { href: "/gallery", label: "Gallery", key: "gallery" },
+  { href: "/story", label: "Story", key: "story" },
+  { href: "/contact", label: "Contact", key: "contact" },
+] as const;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={url(site.home.heroImage)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href={url("/favicon.svg")} />
+    <link rel="preload" href={url(site.fonts.serifFile)} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={url(site.fonts.monoFile)} as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+    <style set:html={fontFaceCss()}></style>
+    <style set:html={themeCssVars(site.theme)}></style>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-title" href={url("/")}>{site.name}</a>
+      <nav class="site-nav" aria-label="Primary">
+        {
+          nav.map((item) => (
+            <a
+              href={url(item.href)}
+              class={current === item.key || (item.key === "gallery" && current === "project") ? "active" : undefined}
+              aria-current={current === item.key ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-name">{site.name}</div>
+      <p class="footer-meta">
+        {site.role} · {site.location} · Est. {site.founded}
+      </p>
+      <a class="footer-email" href={mailto(site.email)}>{site.email}</a>
+      <div class="footer-bottom">
+        <span>{site.credit}</span>
+        <span class="footer-socials">
+          {
+            site.socials.map((s, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={url(s.href)}>{s.label}</a>
+              </>
+            ))
+          }
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      const io = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12 }
+      );
+      // Read all positions first (one layout pass), then write classes —
+      // interleaving reads and writes would force a reflow per element.
+      const belowFold = [...document.querySelectorAll(".reveal")].filter(
+        (el) => el.getBoundingClientRect().top > window.innerHeight * 0.95
+      );
+      belowFold.forEach((el) => {
+        el.classList.add("pre");
+        io.observe(el);
+      });
+      // Fallback: never leave content hidden if the observer misses a beat.
+      setTimeout(
+        () => document.querySelectorAll(".reveal.pre").forEach((el) => el.classList.add("in")),
+        2500
+      );
+    </script>
+  </body>
+</html>

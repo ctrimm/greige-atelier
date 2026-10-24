@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+reports/
+test-results/
+screenshots/*
+!screenshots/home-hero.png
+*.log

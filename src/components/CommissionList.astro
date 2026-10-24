@@ -1,0 +1,27 @@
+---
+import { commissions, projects, url } from "../data/site";
+
+// Link a commission to its project page when a project shares the name.
+const slugFor = (name: string) => projects.find((p) => p.title === name)?.slug;
+---
+
+<section class="commissions reveal" aria-label="Selected commissions">
+  <h2 class="section-label">Selected commissions</h2>
+  <ul class="commission-list">
+    {
+      commissions.map((c) => (
+        <li class="commission-row">
+          <span class="commission-year">{c.year}</span>
+          {slugFor(c.name) ? (
+            <a class="commission-name" href={url(`/${slugFor(c.name)}`)}>
+              {c.name}
+            </a>
+          ) : (
+            <span class="commission-name">{c.name}</span>
+          )}
+          <span class="commission-location">{c.location}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

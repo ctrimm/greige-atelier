@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import CommissionList from "../components/CommissionList.astro";
+import { site, projects, imgSrcset, url, headlineParts } from "../data/site";
+
+const home = site.home;
+---
+
+<Base title={`${site.name.toUpperCase()}`} current="home">
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-eyebrow">{home.eyebrow}</p>
+    <h1 class="hero-headline">
+      {
+        home.headline.map((line) => (
+          <span class="hero-line">
+            {headlineParts(line).map((part) =>
+              part.italic ? <em>{part.text}</em> : <>{part.text}</>
+            )}
+          </span>
+        ))
+      }
+    </h1>
+    <figure class="hero-photo">
+      <img
+        src={url(home.heroImage)}
+        alt={home.heroImageAlt}
+        width="1920"
+        height="1280"
+        fetchpriority="high"
+        srcset={imgSrcset(home.heroImage, [640, 960, 1440], 1920)}
+        sizes="(max-width: 760px) 92vw, 88vw"
+      />
+    </figure>
+  </section>
+
+  <!-- Manifesto -->
+  <section class="manifesto reveal" aria-label="Studio philosophy">
+    {home.manifesto.map((p) => <p>{p}</p>)}
+    <dl class="stats">
+      {
+        home.stats.map((s) => (
+          <div class="stat">
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- Services index -->
+  <section class="services-index reveal" aria-label="Services">
+    <h2 class="section-label">What the studio does</h2>
+    <ul class="service-rows">
+      {
+        site.services.map((s, i) => (
+          <li>
+            <a href={url("/services")}>
+              <span class="service-num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="service-name">{s.title}</span>
+              <span class="service-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Selected projects -->
+  <section class="featured" aria-label="Selected projects">
+    <h2 class="section-label">Selected projects</h2>
+    {
+      projects.slice(0, 4).map((p, i) => (
+        <article class={`feature-row reveal ${i % 2 ? "flip" : ""}`}>
+          <a href={url(`/${p.slug}`)} aria-label={`View project: ${p.title}`}>
+            <img
+              src={url(p.image)}
+              alt={p.imageAlt}
+              width="944"
+              height="624"
+              loading="lazy"
+              srcset={imgSrcset(p.image, [480, 960], 944)}
+              sizes="(max-width: 760px) 92vw, 55vw"
+            />
+          </a>
+          <div class="feature-meta">
+            <p class="feature-kicker">
+              {p.category} — {p.location}
+            </p>
+            <h3>{p.title}</h3>
+            <p>{p.summary}</p>
+            <a class="text-link" href={url(`/${p.slug}`)}>
+              View project: {p.title}
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <!-- Process strip -->
+  <section class="process-strip reveal" aria-label="How the studio works">
+    <h2 class="section-label">How a commission unfolds</h2>
+    <div class="process-grid">
+      {
+        site.process.map((p) => (
+          <div class="process-step">
+            <span class="process-num">{p.step}</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <CommissionList />
+
+  <!-- Closing CTA -->
+  <section class="closing reveal">
+    <p class="closing-line">Your rooms, in their best light.</p>
+    <a class="closing-link" href={url("/contact")}>Start a project</a>
+  </section>
+</Base>

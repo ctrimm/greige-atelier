@@ -1,0 +1,45 @@
+---
+import Base from "../layouts/Base.astro";
+import { site, projects, imgSrcset, url } from "../data/site";
+---
+
+<Base title={`Gallery — ${site.name.toUpperCase()}`} current="gallery">
+  <section class="page-head">
+    <p class="page-eyebrow">Gallery</p>
+    <h1>Selected projects</h1>
+    <p class="page-intro">
+      Homes and rooms by the studio — kitchens, baths, bedrooms and the
+      spaces in between, all built from the same short list of honest
+      materials.
+    </p>
+  </section>
+
+  <section class="gallery-list" aria-label="All projects">
+    {
+      projects.map((p, i) => (
+        <article class="gallery-entry reveal">
+          <a href={url(`/${p.slug}`)} aria-label={`View project: ${p.title}`}>
+            <img
+              src={url(p.image)}
+              alt={p.imageAlt}
+              width="944"
+              height="624"
+              loading={i === 0 ? "eager" : "lazy"}
+              fetchpriority={i === 0 ? "high" : undefined}
+              srcset={imgSrcset(p.image, [480, 960], 944)}
+              sizes="(max-width: 760px) 92vw, 62vw"
+            />
+          </a>
+          <div class="gallery-meta">
+            <h2>
+              <a href={url(`/${p.slug}`)}>{p.title}</a>
+            </h2>
+            <p class="feature-kicker">
+              {p.category} — {p.location}, {p.year}
+            </p>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</Base>

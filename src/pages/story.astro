@@ -1,0 +1,44 @@
+---
+import Base from "../layouts/Base.astro";
+import CommissionList from "../components/CommissionList.astro";
+import { site, imgSrcset, url } from "../data/site";
+
+const story = site.story;
+---
+
+<Base title={`Story — ${site.name.toUpperCase()}`} current="story">
+  <section class="page-head">
+    <p class="page-eyebrow">Story</p>
+    <h1>{story.heading}</h1>
+  </section>
+
+  <section class="story-layout">
+    <figure class="story-photo reveal">
+      <img
+        src={url(story.image)}
+        alt={story.imageAlt}
+        width="1280"
+        height="1920"
+        fetchpriority="high"
+        srcset={imgSrcset(story.image, [550, 800], 1280)}
+        sizes="(max-width: 760px) 92vw, 44vw"
+      />
+    </figure>
+    <div class="story-copy">
+      {story.paragraphs.map((p) => <p>{p}</p>)}
+      <p class="availability">{story.availability}</p>
+      <div class="principles">
+        {
+          story.principles.map((pr) => (
+            <div class="principle reveal">
+              <h2>{pr.title}</h2>
+              <p>{pr.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CommissionList />
+</Base>

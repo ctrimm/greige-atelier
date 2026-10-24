@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+import { site, url } from "../data/site";
+---
+
+<Base title={`Services — ${site.name.toUpperCase()}`} current="services">
+  <section class="page-head">
+    <p class="page-eyebrow">Services</p>
+    <h1>Everything a house needs, in the right order</h1>
+    <p class="page-intro">
+      Four ways to work with the studio — from a single half-day consultation
+      to a full home, designed and installed end to end.
+    </p>
+  </section>
+
+  <section class="service-detail-list" aria-label="All services">
+    {
+      site.services.map((s, i) => (
+        <article class="service-detail reveal">
+          <span class="service-num">{String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <h2>{s.title}</h2>
+            <p>{s.summary}</p>
+            <ul class="chip-list">
+              {s.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="process-strip reveal" aria-label="How the studio works">
+    <h2 class="section-label">How a commission unfolds</h2>
+    <div class="process-grid">
+      {
+        site.process.map((p) => (
+          <div class="process-step">
+            <span class="process-num">{p.step}</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="closing reveal">
+    <p class="closing-line">Not sure which fits?</p>
+    <a class="closing-link" href={url("/contact")}>Ask the studio</a>
+  </section>
+</Base>
