@@ -6,3 +6,4 @@ test-results/
 screenshots/*
 !screenshots/home-hero.png
 *.log
+!screenshots/prettysnap-home.png

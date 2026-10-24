@@ -8,7 +8,7 @@
 
 **Live preview: https://ctrimm.github.io/greige-atelier/**
 
-![Maren Vale Interiors — hero](screenshots/home-hero.png)
+![Maren Vale Interiors — hero](screenshots/prettysnap-home.png)
 
 **Edit one config file, get a studio site** · **165 automated tests** · **Lighthouse Accessibility / Best Practices / SEO = 100** · **AI-readable (llms.txt, JSON-LD)**
 
