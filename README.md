@@ -18,6 +18,17 @@ template. All copy is original (it lives in `site.config.ts`) and all
 photographs are AI-generated for this project (originals in
 `source-images/`).
 
+## Screenshots
+
+All framed with PrettySnap on the same warm cream background.
+
+![Home](screenshots/prettysnap-home.png)
+![Services](screenshots/prettysnap-services.png)
+![Gallery](screenshots/prettysnap-gallery.png)
+![Project](screenshots/prettysnap-project.png)
+![Contact](screenshots/prettysnap-contact.png)
+![Mobile home](screenshots/prettysnap-mobile.png)
+
 ## Stack
 - **Astro 7.4** (static output)
 - **SST v3** — `sst.aws.Astro` → S3 + CloudFront
