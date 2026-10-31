@@ -463,3 +463,89 @@ a.commission-name:hover { text-decoration: underline; text-underline-offset: 5px
   .commission-location { display: none; }
   .manifesto p, .story-copy p { text-align: left; }
 }
+
+/* ---------- Micro-interactions ----------
+   Small motions that reward attention: underline sweeps, arrow nudges,
+   gentle image zooms, a slow drift on the hero photograph. Transform
+   and color transitions only — never opacity fades on content (see the
+   reveal note above) — and everything stops for reduced motion. */
+
+::selection { background: var(--accent); color: var(--deep-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Nav: underline grows from the left */
+.site-nav a {
+  background: linear-gradient(currentColor, currentColor) left calc(100% - 1px) / 0% 1px no-repeat;
+  transition: background-size 0.35s ease;
+  padding-bottom: 3px;
+}
+.site-nav a:hover { background-size: 100% 1px; opacity: 1; }
+
+/* Hero photograph: a slow, barely-there drift */
+.hero-photo { overflow: hidden; }
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+.hero-photo img { animation: kenburns 18s ease-in-out infinite alternate; }
+
+/* Text links: the underline leans in and warms up */
+.text-link {
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+  transition: text-underline-offset 0.3s ease, text-decoration-color 0.3s ease;
+}
+.text-link:hover { text-underline-offset: 8px; text-decoration-color: var(--accent); opacity: 1; }
+
+/* Linked photographs zoom a breath inside their frame */
+a:has(> img) { display: block; overflow: hidden; }
+a:has(> img) > img { transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.21, 1); }
+a:has(> img):hover > img { transform: scale(1.04); }
+
+/* Index rows: name and arrow slide, a whisper of tint */
+.service-rows a { transition: background-color 0.35s ease; }
+.service-rows a:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); opacity: 1; }
+.service-name { display: inline-block; transition: transform 0.35s ease; }
+.service-rows a:hover .service-name { transform: translateX(8px); }
+.service-arrow { transition: transform 0.35s ease; }
+.service-rows a:hover .service-arrow { transform: translateX(6px); }
+
+/* The closing pill lifts on hover, settles on press */
+.closing-link { transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease; }
+.closing-link:hover { transform: translateY(-2px); }
+.closing-link:active { transform: translateY(0) scale(0.98); }
+
+/* Chips rise to meet the cursor */
+.chip-list li { transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease; }
+.chip-list li:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* Commission names lean in */
+.commission-name { display: inline-block; transition: transform 0.35s ease; }
+.commission-row:hover .commission-name { transform: translateX(6px); }
+
+/* Next-project link grows an arrow that nudges forward */
+.project-next a::after {
+  content: " \2192";
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.project-next a:hover::after { transform: translateX(4px); }
+
+/* Footer email: underline sweep in the footer's own ink */
+.footer-email {
+  background: linear-gradient(currentColor, currentColor) left calc(100% - 2px) / 0% 1px no-repeat;
+  transition: background-size 0.4s ease;
+  padding-bottom: 4px;
+}
+.footer-email:hover { background-size: 100% 1px; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
