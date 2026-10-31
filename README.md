@@ -29,6 +29,15 @@ All framed with PrettySnap on the same warm cream background.
 ![Contact](screenshots/prettysnap-contact.png)
 ![Mobile home](screenshots/prettysnap-mobile.png)
 
+## In motion
+
+The micro-interactions, recorded live: load-in, hero drift, row and
+photo hovers, and a click through to a detail page.
+
+![Motion sample](screenshots/motion/motion.webp)
+
+Full-quality video: [motion.mp4](screenshots/motion/motion.mp4)
+
 ## Stack
 - **Astro 7.4** (static output)
 - **SST v3** — `sst.aws.Astro` → S3 + CloudFront

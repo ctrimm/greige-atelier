@@ -7,3 +7,5 @@ screenshots/*
 !screenshots/home-hero.png
 *.log
 !screenshots/prettysnap-*.png
+!screenshots/motion/
+!screenshots/motion/*
